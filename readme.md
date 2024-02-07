@@ -6,6 +6,14 @@ This Django application demonstrates the use of dynamic forms. It creates a form
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
+### Setting Up a Virtual Environment
+
+It's recommended to use a Python virtual environment for development to isolate the project dependencies. You can create a virtual environment using the `venv` module:
+
+```bash
+python3 -m venv env
+```
+
 ### Prerequisites
 
 You need to have Python and Django installed on your machine. You can download Python from [here](https://www.python.org/downloads/) and Django can be installed via pip:
@@ -14,12 +22,16 @@ You need to have Python and Django installed on your machine. You can download P
 pip install django
 ```
 
+### Setting Up the Project
+
 Make the necessary migrations by running the following command:
 
 ```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
+
+### Running the Application
 
 Start the Django server by running the following command:
 
@@ -36,7 +48,3 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 ### License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-```
-
-```
