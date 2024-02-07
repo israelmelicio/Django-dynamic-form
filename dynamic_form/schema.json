@@ -28,6 +28,11 @@
             "type": "string",
             "pattern": "^.{0,255}$",
             "description": "Observações"
+        },
+        "Verify07": {
+            "type": "string",
+            "pattern": "^.{0,255}$",
+            "description": "Observações Finais"
         }
     },
     "required": [
@@ -42,19 +47,19 @@
     },
     "if": {
         "properties": {
-            "Verify02": {
+            "Verify05": {
                 "const": true
             }
         }
     },
     "then": {
         "required": [
-            "Verify03"
+            "Verify06"
         ]
     },
     "else": {
         "required": [
-            "Verify06"
+            "Verify07"
         ]
     }
 }

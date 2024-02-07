@@ -2,7 +2,6 @@
 <html>
     <head>
         <title>Dynamic Form</title>
-        <!-- Include any additional CSS or JS here -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <style>
             /* Add your CSS styling here */
@@ -12,16 +11,22 @@
         <div id="dynamic-form-container"></div>
         <script type="text/javascript">
             $(document).ready(function() {
-                // Assuming 'tasks_schema' is passed as a context variable from Django view
                 var tasksSchema = {{ tasks_schema|safe }};
 
-                // Function to create form elements based on the schema
                 function createFormElements(schema) {
                     var formHtml = '<form id="dynamic-form">';
+                    var requiredFields = schema.required || [];
+
                     for (var key in schema.properties) {
                         var field = schema.properties[key];
-                        // Using the 'description' as the label for the form field
-                        formHtml += '<div class="form-group"><label for="' + key + '">' + field.description + '</label>';
+                        var isRequired = requiredFields.includes(key);
+                        var fieldId = 'field-' + key;
+
+                        // Initial visibility based on 'required' and 'dependencies'
+                        var isVisible = isRequired || (schema.dependencies && schema.dependencies[key]);
+
+                        formHtml += '<div class="form-group"' + (isVisible ? '' : ' style="display: none;"') + ' id="' + fieldId + '">';
+                        formHtml += '<label for="' + key + '">' + field.description + '</label>';
 
                         switch (field.type) {
                             case 'string':
@@ -34,6 +39,7 @@
                         }
                         formHtml += '</div>';
                     }
+
                     formHtml += '<input type="submit" value="Submit" class="btn btn-primary"></form>';
                     return formHtml;
                 }
@@ -41,8 +47,25 @@
                 var formHtml = createFormElements(tasksSchema);
                 $('#dynamic-form-container').html(formHtml);
 
-                // Optional: Add form submission handler here
+                // Add event listeners for dependency handling
+                handleDependencies(tasksSchema);
             });
+
+            function handleDependencies(schema) {
+                if (schema.dependencies) {
+                    for (var key in schema.dependencies) {
+                        $('#' + key).change(function() {
+                            var dependentFields = schema.dependencies[this.id];
+                            dependentFields.forEach(function(dependentKey) {
+                                $('#field-' + dependentKey).toggle(this.checked);
+                            });
+                        });
+                    }
+                }
+
+                // Add additional logic for 'if', 'then', 'else' conditions
+                // This can be complex depending on your schema structure
+            }
         </script>
     </body>
 </html>
