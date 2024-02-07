@@ -1,6 +1,6 @@
 # Django Dynamic Form Application
 
-This is a Django application that demonstrates the use of dynamic forms.
+This Django application demonstrates the use of dynamic forms. It creates a form based on a JSON schema, considering required fields, dependencies, and if conditionals of the schema. This allows for the creation of complex, dynamic forms based on the structure defined in the JSON schema. (in the file `dynamic-form/schema.json`) that can be replaced with any other JSON schema.
 
 ## Getting Started
 
