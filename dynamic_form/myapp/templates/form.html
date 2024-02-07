@@ -49,6 +49,7 @@
 
                 // Add event listeners for dependency handling
                 handleDependencies(tasksSchema);
+                handleConditionalLogic(tasksSchema);
             });
 
             function handleDependencies(schema) {
@@ -62,9 +63,35 @@
                         });
                     }
                 }
+            }
 
-                // Add additional logic for 'if', 'then', 'else' conditions
-                // This can be complex depending on your schema structure
+            function handleConditionalLogic(schema) {
+                if (schema.if && schema.then && schema.else) {
+                    var conditionFieldName = Object.keys(schema.if.properties)[0];
+                    var thenRequiredFields = schema.then.required || [];
+                    var elseRequiredFields = schema.else.required || [];
+
+                    $('#' + conditionFieldName).change(function() {
+                        var conditionValue = $(this).is(':checked');
+                        updateConditionalFields(conditionValue, thenRequiredFields, elseRequiredFields);
+                    });
+
+                    // Initial state based on current value
+                    var initialConditionValue = $('#' + conditionFieldName).is(':checked');
+                    updateConditionalFields(initialConditionValue, thenRequiredFields, elseRequiredFields);
+                }
+            }
+
+            function updateConditionalFields(conditionValue, thenFields, elseFields) {
+                var fieldsToShow = conditionValue ? thenFields : elseFields;
+                fieldsToShow.forEach(function(field) {
+                    $('#field-' + field).show();
+                });
+
+                var fieldsToHide = conditionValue ? elseFields : thenFields;
+                fieldsToHide.forEach(function(field) {
+                    $('#field-' + field).hide();
+                });
             }
         </script>
     </body>
