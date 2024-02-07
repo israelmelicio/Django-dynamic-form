@@ -1,0 +1,60 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "properties": {
+        "Verify01": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9]{1,100}$",
+            "description": "Descreva como esta o acesso CFTV"
+        },
+        "Verify02": {
+            "type": "boolean",
+            "description": "Existe problema no acesso CFTV?"
+        },
+        "Verify03": {
+            "type": "string",
+            "format": "string",
+            "description": "Ligar para o Vigilante e veriificar contra senha"
+        },
+        "Verify04": {
+            "type": "string",
+            "pattern": "^[0-9]{10,11}$",
+            "description": "Numero de telefone chamado no atendimento (com DDD)"
+        },
+        "Verify05": {
+            "type": "boolean",
+            "description": "Alarme em disparo?"
+        },
+        "Verify06": {
+            "type": "string",
+            "pattern": "^.{0,255}$",
+            "description": "Observações"
+        }
+    },
+    "required": [
+        "Verify01",
+        "Verify02",
+        "Verify05"
+    ],
+    "dependencies": {
+        "Verify03": [
+            "Verify04"
+        ]
+    },
+    "if": {
+        "properties": {
+            "Verify02": {
+                "const": true
+            }
+        }
+    },
+    "then": {
+        "required": [
+            "Verify03"
+        ]
+    },
+    "else": {
+        "required": [
+            "Verify06"
+        ]
+    }
+}

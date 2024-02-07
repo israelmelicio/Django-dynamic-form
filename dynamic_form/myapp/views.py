@@ -1,14 +1,10 @@
 from django.shortcuts import render
-from .forms import MyForm
-
+# from .models import OccurrenceCategory
 
 def form(request):
-    if request.method == 'POST':
-        form = MyForm(request.POST)
-        if form.is_valid():
-            # Process the data, redirect, or do something else
-            return render(request, 'myapp/form_success.html')
-    else:
-        form = MyForm()
-
-    return render(request, 'myapp/form.html', {'form': form})
+    # category = OccurrenceCategory.objects.get(id=category_id)
+    # tasks_schema = category.tasksSchema
+    tasks_schema = "{}"
+    with open('schema.json') as f:
+        tasks_schema = f.read()
+    return render(request, 'form.html', {'tasks_schema': tasks_schema})

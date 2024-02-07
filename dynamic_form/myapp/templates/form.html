@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dynamic Form</title>
+        <!-- Include any additional CSS or JS here -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <style>
+            /* Add your CSS styling here */
+        </style>
+    </head>
+    <body>
+        <div id="dynamic-form-container"></div>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                // Assuming 'tasks_schema' is passed as a context variable from Django view
+                var tasksSchema = {{ tasks_schema|safe }};
+
+                // Function to create form elements based on the schema
+                function createFormElements(schema) {
+                    var formHtml = '<form id="dynamic-form">';
+                    for (var key in schema.properties) {
+                        var field = schema.properties[key];
+                        // Using the 'description' as the label for the form field
+                        formHtml += '<div class="form-group"><label for="' + key + '">' + field.description + '</label>';
+
+                        switch (field.type) {
+                            case 'string':
+                                formHtml += '<input type="text" id="' + key + '" name="' + key + '" class="form-control"><br>';
+                                break;
+                            case 'boolean':
+                                formHtml += '<input type="checkbox" id="' + key + '" name="' + key + '" class="form-check-input"><br>';
+                                break;
+                            // Add other types as needed
+                        }
+                        formHtml += '</div>';
+                    }
+                    formHtml += '<input type="submit" value="Submit" class="btn btn-primary"></form>';
+                    return formHtml;
+                }
+
+                var formHtml = createFormElements(tasksSchema);
+                $('#dynamic-form-container').html(formHtml);
+
+                // Optional: Add form submission handler here
+            });
+        </script>
+    </body>
+</html>
